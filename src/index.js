@@ -1,1 +1,1 @@
-document.getElementById('root').innerText = 'Congrats, all right';
+import navigation from './navigation/navigation';
