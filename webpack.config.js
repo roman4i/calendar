@@ -9,13 +9,13 @@ module.exports = {
   },
 
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, './build'),
     filename: 'index.js',
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/template.html'),
+      template: path.resolve(__dirname, './src/template/template.html'),
       filename: 'index.html',
     }),
 
