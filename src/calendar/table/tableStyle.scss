@@ -1,0 +1,28 @@
+$headCellColor: lightgray;
+$eventColor: lightgreen;
+
+.headColorise{
+  background-color: $headCellColor;
+}
+
+.tabCell{
+  width: 16%;
+  height: 35px;
+  border: solid gray 1px;
+  text-align: center;
+}
+
+.eventCell{
+  background-color: $eventColor;
+}
+
+.tableContainer{
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+table{
+  border-spacing: 0px;
+  width: 100%;
+}
