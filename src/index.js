@@ -6,8 +6,13 @@ import './calendar/table/tableStyle.scss';
 
 const routes = {
   '/calendar': createCalendarPage,
+  '/create-event': createEventPage,
 };
 
 document.body.onload = () => {
   navigation('/calendar', routes);
+};
+
+document.getElementById('createEvent').onclick = () => {
+  navigation('/create-event', routes);
 };
