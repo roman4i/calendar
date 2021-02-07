@@ -18,6 +18,7 @@ export default function createCalendarHead() {
   eventDiv.append(personList);
 
   const newEventBtn = document.createElement('input');
+  newEventBtn.id = 'createEvent';
   newEventBtn.type = 'button';
   newEventBtn.value = 'New event +';
   newEventBtn.classList = 'newEvent';
