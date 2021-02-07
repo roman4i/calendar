@@ -6,8 +6,8 @@ export default function createCalendarPage(navFunc, routeArr) {
   calendarDiv.id = 'calendarDivCont';
   calendarDiv.classList = 'calendarDiv';
 
+  document.getElementById('root').append(calendarDiv);
+
   createCalendarHead(navFunc, routeArr);
   createTable();
-
-  document.getElementById('root').append(calendarDiv);
 }
