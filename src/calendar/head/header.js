@@ -1,4 +1,4 @@
-export default function createCalendarHead() {
+export default function createCalendarHead(navFunc, routeArr) {
   const headDiv = document.createElement('div');
   headDiv.id = 'calendarContainer';
   headDiv.classList = 'headStyle';
@@ -22,8 +22,12 @@ export default function createCalendarHead() {
   newEventBtn.type = 'button';
   newEventBtn.value = 'New event +';
   newEventBtn.classList = 'newEvent';
+  newEventBtn.onclick = () => {
+    navFunc('/create-event', routeArr);
+    document.getElementById('calendarDivCont').remove();
+  };
 
   eventDiv.append(newEventBtn);
 
-  document.getElementById('root').append(headDiv);
+  document.getElementById('calendarDivCont').append(headDiv);
 }

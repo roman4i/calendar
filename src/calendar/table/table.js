@@ -33,7 +33,7 @@ export default function createTable() {
   }
 
   tableDiv.append(calendarTable);
-  document.getElementById('root').append(tableDiv);
+  document.getElementById('calendarDivCont').append(tableDiv);
 
   let startTime = 10;
   for (let i = 7; i < 56; i += 6) {
