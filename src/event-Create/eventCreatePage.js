@@ -1,3 +1,5 @@
+import processData from './generateEventData';
+
 export default function createEventPage(navFunc, routeArr) {
   const eventDiv = document.createElement('div');
   eventDiv.id = 'createEventDiv';
@@ -11,8 +13,10 @@ export default function createEventPage(navFunc, routeArr) {
   nameDivCont.classList = 'optionText';
   eventNameDiv.append(nameDivCont);
 
+  // Text input for event name
   const nameInput = document.createElement('input');
   nameInput.type = 'text';
+  nameInput.id = 'nameField';
   nameInput.classList = 'selectionEvent';
   eventNameDiv.append(nameInput);
 
@@ -43,10 +47,10 @@ export default function createEventPage(navFunc, routeArr) {
     eventDiv.append(optionDiv);
   }
 
-  const personName = ['Igor', 'Oleg', 'Olga', 'Yaroslav', 'Anna'];
+  const persons = JSON.parse(localStorage.getItem('nameList'));
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const timeList = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
-  createEventOption('Participants:', 'choosePerson', personName, true);
+  createEventOption('Participants:', 'choosePerson', persons, true);
   createEventOption('Day:', 'daySelect', days, false);
   createEventOption('Time:', 'timeSelect', timeList, false);
 
@@ -61,13 +65,24 @@ export default function createEventPage(navFunc, routeArr) {
   cancelBut.onclick = () => {
     navFunc('/calendar', routeArr);
     eventDiv.remove();
+    if (document.getElementById('errorContent') != null) {
+      document.getElementById('errorContent').remove();
+    }
   };
   buttonsDiv.append(cancelBut);
 
+  // Create button init
   const createBut = document.createElement('input');
   createBut.type = 'button';
   createBut.value = 'Create';
   createBut.classList = 'eventButton';
+  createBut.onclick = () => {
+    const succes = processData();
+    if (succes) {
+      navFunc('/calendar', routeArr);
+      eventDiv.remove();
+    }
+  };
   buttonsDiv.append(createBut);
 
   eventDiv.append(buttonsDiv);

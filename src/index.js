@@ -15,6 +15,9 @@ const routes = {
   },
 };
 
+const personName = ['Igor', 'Oleg', 'Olga', 'Yaroslav', 'Anna'];
+localStorage.setItem('nameList', JSON.stringify(personName));
+
 window.onpopstate = () => {
   navigation(window.location.pathname, routes);
   if (window.location.pathname === '/create-event') {
