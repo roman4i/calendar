@@ -1,4 +1,12 @@
+import innerEventCell from '../table/insertEvent';
+import createTable from '../table/table';
+
 export default function createCalendarHead(navFunc, routeArr) {
+  function clearTable() {
+    document.getElementById('tableCont').remove();
+    createTable();
+  }
+
   const headDiv = document.createElement('div');
   headDiv.id = 'calendarContainer';
   headDiv.classList = 'headStyle';
@@ -16,6 +24,27 @@ export default function createCalendarHead(navFunc, routeArr) {
   personList.id = 'personSelect';
   personList.classList = 'personSelect';
   eventDiv.append(personList);
+
+  // Members list inner
+  const namesList = JSON.parse(localStorage.getItem('nameList'));
+  const optionAllPersons = document.createElement('option');
+  optionAllPersons.value = 0;
+  optionAllPersons.text = 'All members';
+  optionAllPersons.onclick = () => {
+    clearTable();
+    innerEventCell('all');
+  };
+  personList.add(optionAllPersons);
+  namesList.forEach((element, index) => {
+    const nameOption = document.createElement('option');
+    nameOption.value = index + 1;
+    nameOption.text = element;
+    nameOption.onclick = () => {
+      clearTable();
+      innerEventCell('single', element);
+    };
+    personList.add(nameOption);
+  });
 
   const newEventBtn = document.createElement('input');
   newEventBtn.id = 'createEvent';
