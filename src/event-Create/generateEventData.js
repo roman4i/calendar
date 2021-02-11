@@ -52,7 +52,7 @@ export default function processData() {
     if (globalEventList != null) {
       for (let key in globalEventList) {
         if (globalEventList[key].cell === cell) {
-          document.getElementById('root').append(creationError('booked'));
+          document.getElementById('root').prepend(creationError('booked'));
           booked = true;
         }
       }
