@@ -15,7 +15,7 @@ export default function innerEventCell(mode, personName) {
       targetCell.append(cellDiv);
 
       const delButton = document.createElement('div');
-      delButton.insertAdjacentText('afterbegin', 'x');
+      delButton.insertAdjacentText('afterbegin', '×');
       delButton.onclick = () => {
         createDeleteWindow(key);
       };
@@ -37,7 +37,7 @@ export default function innerEventCell(mode, personName) {
           targetCell.append(cellDiv);
 
           const delButton = document.createElement('div');
-          delButton.insertAdjacentText('afterbegin', 'x');
+          delButton.insertAdjacentText('afterbegin', '×');
           delButton.onclick = () => {
             createDeleteWindow(key);
           };
