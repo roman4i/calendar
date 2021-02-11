@@ -1,3 +1,6 @@
+import createDeleteWindow from './deleteWindow/delWindow';
+import './deleteWindow/delWindowStyle.scss';
+
 export default function innerEventCell(mode, personName) {
   const eventDataObj = JSON.parse(localStorage.getItem('eventsStorage'));
 
@@ -6,7 +9,7 @@ export default function innerEventCell(mode, personName) {
       const targetCell = document.getElementById(`cell${eventDataObj[key].cell}`);
 
       const cellDiv = document.createElement('div');
-      cellDiv.id = `cellDiv${eventDataObj[key].cell}}`;
+      cellDiv.id = `cellDiv${eventDataObj[key].cell}`;
       cellDiv.insertAdjacentText('afterbegin', key);
       cellDiv.classList = 'eventCell';
       targetCell.append(cellDiv);
@@ -14,7 +17,7 @@ export default function innerEventCell(mode, personName) {
       const delButton = document.createElement('div');
       delButton.insertAdjacentText('afterbegin', 'x');
       delButton.onclick = () => {
-        console.log(`To delete event ${key}`);
+        createDeleteWindow(key);
       };
       cellDiv.append(delButton);
     }
@@ -36,9 +39,9 @@ export default function innerEventCell(mode, personName) {
           const delButton = document.createElement('div');
           delButton.insertAdjacentText('afterbegin', 'x');
           delButton.onclick = () => {
-            console.log(`To delete event ${key}`);
+            createDeleteWindow(key);
           };
-          cellDiv.append(delButton)
+          cellDiv.append(delButton);
         }
       });
     }
