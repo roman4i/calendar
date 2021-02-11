@@ -15,6 +15,7 @@ export default function innerEventCell(mode, personName) {
       targetCell.append(cellDiv);
 
       const delButton = document.createElement('div');
+      delButton.style.cursor = 'pointer';
       delButton.insertAdjacentText('afterbegin', '×');
       delButton.onclick = () => {
         createDeleteWindow(key);

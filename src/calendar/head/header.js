@@ -30,21 +30,25 @@ export default function createCalendarHead(navFunc, routeArr) {
   const optionAllPersons = document.createElement('option');
   optionAllPersons.value = 0;
   optionAllPersons.text = 'All members';
-  optionAllPersons.onclick = () => {
-    clearTable();
-    innerEventCell('all');
-  };
   personList.add(optionAllPersons);
+
   namesList.forEach((element, index) => {
     const nameOption = document.createElement('option');
     nameOption.value = index + 1;
     nameOption.text = element;
-    nameOption.onclick = () => {
-      clearTable();
-      innerEventCell('single', element);
-    };
     personList.add(nameOption);
   });
+
+  personList.onchange = () => {
+    if (personList.options.selectedIndex == 0) {
+      clearTable();
+      innerEventCell('all');
+    } else {
+      clearTable();
+      const selectedItem = personList.options.selectedIndex;
+      innerEventCell('single', personList.options[selectedItem].text);
+    }
+  };
 
   const newEventBtn = document.createElement('input');
   newEventBtn.id = 'createEvent';
