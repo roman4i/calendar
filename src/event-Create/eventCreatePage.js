@@ -35,6 +35,10 @@ export default function createEventPage(navFunc, routeArr) {
     optionSelection.id = optionId;
     optionSelection.multiple = multiple;
     optionSelection.classList = 'selectionEvent';
+    if (multiple) {
+      optionSelection.style.height = 'auto';
+      optionSelection.size = 1;
+    }
 
     data.forEach((item, number) => {
       const option = document.createElement('option');
