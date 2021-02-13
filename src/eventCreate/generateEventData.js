@@ -1,5 +1,6 @@
 import creationError from './eventCreateEror';
 
+// eslint-disable-next-line consistent-return
 export default function processData() {
   const eventObject = {};
   eventObject.participiants = [];
@@ -11,7 +12,7 @@ export default function processData() {
     const participantsSelected = document.getElementById('choosePerson').selectedOptions;
     if (participantsSelected.length > 0) {
       const getSelectCollection = participantsSelected;
-      for (let i = 0; i < getSelectCollection.length; i++) {
+      for (let i = 0; i < getSelectCollection.length; i += 1) {
         eventObject.participiants.push(getSelectCollection[i].label);
       }
     } else {
@@ -29,7 +30,6 @@ export default function processData() {
     eventObject.time = document.getElementById('timeSelect').selectedOptions[0].label;
     let dayPos;
     let timePos;
-    let cell;
 
     const timeList = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
     timeList.forEach((timeValue, index) => {
@@ -45,17 +45,17 @@ export default function processData() {
       }
     });
 
-    cell = timePos * 6 + dayPos + 1;
+    const cell = timePos * 6 + dayPos + 1;
 
     let booked = false;
     let globalEventList = JSON.parse(localStorage.getItem('eventsStorage'));
     if (globalEventList != null) {
-      for (const key in globalEventList) {
-        if (globalEventList[key].cell === cell) {
+      Object.values(globalEventList).forEach((event) => {
+        if (event.cell === cell) {
           document.getElementById('root').prepend(creationError('booked'));
           booked = true;
         }
-      }
+      });
       if (!booked) {
         globalEventList[eventObject.name] = {};
         globalEventList[eventObject.name].participiants = eventObject.participiants;

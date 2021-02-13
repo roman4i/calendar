@@ -19,13 +19,13 @@ export default function createTable() {
 
   let idCount = 7;
 
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 10; i += 1) {
     const tr = document.createElement('tr');
-    for (let j = 0; j < 6; j++) {
+    for (let j = 0; j < 6; j += 1) {
       const cell = document.createElement('td');
       cell.id = `cell${idCount}`;
       cell.classList = 'tabCell';
-      idCount++;
+      idCount += 1;
 
       tr.append(cell);
     }

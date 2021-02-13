@@ -4,16 +4,14 @@ import './deleteWindow/delWindowStyle.scss';
 export default function innerEventCell(mode, personName) {
   const eventDataObj = JSON.parse(localStorage.getItem('eventsStorage'));
 
-  if ((mode === 'all') && (eventDataObj != null)) {
-    for (const key in eventDataObj) {
-      const targetCell = document.getElementById(`cell${eventDataObj[key].cell}`);
-
+  if ((mode === 'all') && (eventDataObj !== null)) {
+    Object.entries(eventDataObj).forEach(([key, event]) => {
+      const targetCell = document.getElementById(`cell${event.cell}`);
       const cellDiv = document.createElement('div');
-      cellDiv.id = `cellDiv${eventDataObj[key].cell}`;
+      cellDiv.id = `cellDiv${event.cell}`;
       cellDiv.insertAdjacentText('afterbegin', key);
       cellDiv.classList = 'eventCell';
       targetCell.append(cellDiv);
-
       const delButton = document.createElement('div');
       delButton.style.cursor = 'pointer';
       delButton.insertAdjacentText('afterbegin', '×');
@@ -21,18 +19,18 @@ export default function innerEventCell(mode, personName) {
         createDeleteWindow(key);
       };
       cellDiv.append(delButton);
-    }
+    });
   }
 
   if (mode === 'single') {
-    for (const key in eventDataObj) {
-      const eventNames = eventDataObj[key].participiants;
+    Object.entries(eventDataObj).forEach(([key, event]) => {
+      const eventNames = event.participiants;
       eventNames.forEach((element) => {
         if (personName === element) {
-          const targetCell = document.getElementById(`cell${eventDataObj[key].cell}`);
+          const targetCell = document.getElementById(`cell${event.cell}`);
 
           const cellDiv = document.createElement('div');
-          cellDiv.id = `cellDiv${eventDataObj[key].cell}`;
+          cellDiv.id = `cellDiv${event.cell}`;
           cellDiv.insertAdjacentText('afterbegin', key);
           cellDiv.classList = 'eventCell';
           targetCell.append(cellDiv);
@@ -45,6 +43,6 @@ export default function innerEventCell(mode, personName) {
           cellDiv.append(delButton);
         }
       });
-    }
+    });
   }
 }
