@@ -39,7 +39,7 @@ export default function processData() {
     });
 
     const daysList = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-    daysList.forEach( (dayVal, index) => {
+    daysList.forEach((dayVal, index) => {
       if (eventObject.day === dayVal) {
         dayPos = index + 1;
       }
@@ -50,7 +50,7 @@ export default function processData() {
     let booked = false;
     let globalEventList = JSON.parse(localStorage.getItem('eventsStorage'));
     if (globalEventList != null) {
-      for (let key in globalEventList) {
+      for (const key in globalEventList) {
         if (globalEventList[key].cell === cell) {
           document.getElementById('root').prepend(creationError('booked'));
           booked = true;

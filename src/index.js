@@ -1,6 +1,6 @@
 import { createPage as createEventPage } from './eventCreate';
 import { createPage as createCalendarPage } from './calendar';
-import goToPage, {basePathname} from './navigation';
+import goToPage, { basePathname } from './navigation';
 
 import './calendar/head/calendarHead.scss';
 import './calendar/table/tableStyle.scss';
