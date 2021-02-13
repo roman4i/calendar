@@ -8,7 +8,7 @@
 ### Build project
   npm run build
 ### Start local web server
-  npm run server
+  npm run dev
 
 ## Overview
 User can create and delete events, choose participants and time for event at creation page, filter created events by person. The project is done using pure JS.

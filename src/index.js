@@ -1,6 +1,6 @@
 import { createPage as createEventPage } from './eventCreate';
 import { createPage as createCalendarPage } from './calendar';
-import goToPage from './navigation';
+import goToPage, {basePathname} from './navigation';
 
 import './calendar/head/calendarHead.scss';
 import './calendar/table/tableStyle.scss';
@@ -18,10 +18,10 @@ window.onpopstate = () => {
     goToPage(routeToGo.name);
   }
 
-  if (window.location.pathname === '/create-event') {
+  if (window.location.pathname === `${basePathname}${config.routes[config.routeNames.createEvent].path}`) {
     document.getElementById('calendarDivCont').remove();
   }
-  if (window.location.pathname === '/calendar') {
+  if (window.location.pathname === `${basePathname}${config.routes[config.routeNames.calendar].path}`) {
     document.getElementById('createEventDiv').remove();
   }
 };
