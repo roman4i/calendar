@@ -1,25 +1,23 @@
-import navigation from './navigation/navigation';
-import createCalendarPage from './calendar/calendar';
-import createEventPage from './event-Create/eventCreatePage';
+import { createPage as createEventPage } from './eventCreate';
+import { createPage as createCalendarPage } from './calendar';
+import goToPage from './navigation';
 
 import './calendar/head/calendarHead.scss';
 import './calendar/table/tableStyle.scss';
-import './event-Create/eventPage.scss';
-
-const routes = {
-  '/calendar': () => {
-    createCalendarPage(navigation, routes);
-  },
-  '/create-event': () => {
-    createEventPage(navigation, routes);
-  },
-};
+import './eventCreate/eventPage.scss';
+import config from './config';
 
 const personName = ['Igor', 'Oleg', 'Olga', 'Yaroslav', 'Anna'];
 localStorage.setItem('nameList', JSON.stringify(personName));
 
 window.onpopstate = () => {
-  navigation(window.location.pathname, routes);
+  const routeToGo = Object.values(config.routes)
+    .find((routeConfig) => window.location.pathname.includes(routeConfig.path));
+
+  if (routeToGo) {
+    goToPage(routeToGo.name);
+  }
+
   if (window.location.pathname === '/create-event') {
     document.getElementById('calendarDivCont').remove();
   }
@@ -28,4 +26,19 @@ window.onpopstate = () => {
   }
 };
 
-navigation('/calendar', routes);
+document.addEventListener('pushStateChanged', (event) => {
+  const { route } = event.detail;
+
+  switch (route.name) {
+    case config.routeNames.calendar:
+      createCalendarPage();
+      break;
+    case config.routeNames.createEvent:
+      createEventPage();
+      break;
+    default:
+      break;
+  }
+});
+
+goToPage(config.routeNames.calendar);

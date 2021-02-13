@@ -1,66 +1,74 @@
 import innerEventCell from '../table/insertEvent';
 import createTable from '../table/table';
+import goToPage from '../../navigation';
+import config from '../../config';
+import { createDOMElement } from '../../utils';
 
-export default function createCalendarHead(navFunc, routeArr) {
+const createPeopleOptions = () => {
+  const namesList = JSON.parse(localStorage.getItem('nameList'));
+
+  return [
+    {
+      value: 0,
+      text: 'All members',
+    },
+    ...namesList.map((name, index) => ({ value: index + 1, text: name })),
+  ];
+};
+
+export default function createCalendarHead(contentElement) {
   function clearTable() {
     document.getElementById('tableCont').remove();
     createTable();
   }
 
-  const headDiv = document.createElement('div');
-  headDiv.id = 'calendarContainer';
-  headDiv.classList = 'headStyle';
-
-  const headText = document.createElement('div');
-  headText.innerText = 'Calendar';
-  headText.classList = 'headText';
-  headDiv.append(headText);
-
-  const eventDiv = document.createElement('div');
-  eventDiv.classList = 'eventContainer';
-  headDiv.append(eventDiv);
-
-  const personList = document.createElement('select');
-  personList.id = 'personSelect';
-  personList.classList = 'personSelect';
-  eventDiv.append(personList);
-
-  // Members list inner
-  const namesList = JSON.parse(localStorage.getItem('nameList'));
-  const optionAllPersons = document.createElement('option');
-  optionAllPersons.value = 0;
-  optionAllPersons.text = 'All members';
-  personList.add(optionAllPersons);
-
-  namesList.forEach((element, index) => {
-    const nameOption = document.createElement('option');
-    nameOption.value = index + 1;
-    nameOption.text = element;
-    personList.add(nameOption);
+  const peopleSelect = createDOMElement({
+    tagName: 'select',
+    id: 'personSelect',
+    classList: 'personSelect',
+    selectOptions: createPeopleOptions(),
+    onchange: () => {
+      if (peopleSelect.options.selectedIndex === 0) {
+        clearTable();
+        innerEventCell('all');
+      } else {
+        clearTable();
+        const selectedItem = peopleSelect.options.selectedIndex;
+        innerEventCell('single', peopleSelect.options[selectedItem].text);
+      }
+    },
   });
 
-  personList.onchange = () => {
-    if (personList.options.selectedIndex == 0) {
-      clearTable();
-      innerEventCell('all');
-    } else {
-      clearTable();
-      const selectedItem = personList.options.selectedIndex;
-      innerEventCell('single', personList.options[selectedItem].text);
-    }
-  };
+  const headDiv = createDOMElement({
+    tagName: 'div',
+    id: 'calendarContainer',
+    classList: 'headStyle',
+    children: [
+      createDOMElement({
+        tagName: 'div',
+        innerText: 'Calendar',
+        classList: 'headText',
+      }),
+      createDOMElement({
+        tagName: 'div',
+        classList: 'eventContainer',
+        children: [
+          peopleSelect,
+          createDOMElement({
+            tagName: 'input',
+            id: 'createEvent',
+            type: 'button',
+            value: 'New event +',
+            classList: 'newEvent',
+            onclick: () => {
+              goToPage(config.routeNames.createEvent);
+              contentElement.remove();
+            },
+          }),
+        ],
+      }),
+    ],
+  });
 
-  const newEventBtn = document.createElement('input');
-  newEventBtn.id = 'createEvent';
-  newEventBtn.type = 'button';
-  newEventBtn.value = 'New event +';
-  newEventBtn.classList = 'newEvent';
-  newEventBtn.onclick = () => {
-    navFunc('/create-event', routeArr);
-    document.getElementById('calendarDivCont').remove();
-  };
-
-  eventDiv.append(newEventBtn);
-
-  document.getElementById('calendarDivCont').append(headDiv);
+  contentElement.append(headDiv);
 }
