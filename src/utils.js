@@ -1,3 +1,4 @@
+// not used in all files because it is a test method of element creation
 export const createDOMElement = (options) => {
   const {
     tagName = 'div',

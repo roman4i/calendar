@@ -9,12 +9,10 @@ export default function processData() {
   const nameParam = document.getElementById('nameField').value;
   if (nameParam !== '') {
     eventObject.name = nameParam;
-    const participantsSelected = document.getElementById('choosePerson').selectedOptions;
+    const participantsString = document.getElementById('choosePerson').item(0).text;
+    const participantsSelected = participantsString.split(',');
     if (participantsSelected.length > 0) {
-      const getSelectCollection = participantsSelected;
-      for (let i = 0; i < getSelectCollection.length; i += 1) {
-        eventObject.participiants.push(getSelectCollection[i].label);
-      }
+      eventObject.participiants = [...participantsSelected];
     } else {
       if (!errors) {
         document.getElementById('root').prepend(creationError('participants'));
