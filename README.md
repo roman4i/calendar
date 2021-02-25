@@ -2,7 +2,7 @@
 
 
 ## Link to Github Pages
-<https://roman4i.github.io/intership-test-task/build>
+<https://roman4i.github.io/internship-test-task>
 
 ## Commands for npm
 ### Build project
