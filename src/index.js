@@ -1,6 +1,7 @@
 import { createPage as createEventPage } from './eventCreate';
 import { createPage as createCalendarPage } from './calendar';
 import goToPage, { basePathname } from './navigation';
+import authShow from './calendar/auth/auth'
 
 import './calendar/head/calendarHead.scss';
 import './calendar/table/tableStyle.scss';
@@ -12,6 +13,8 @@ localStorage.setItem('nameList', JSON.stringify(personName));
 
 const adminList = ['Oleg', 'Olga'];
 localStorage.setItem('admList', JSON.stringify(adminList));
+
+localStorage.setItem('currentUser', 'none');
 
 window.onpopstate = () => {
   const routeToGo = Object.values(config.routes)
@@ -44,4 +47,5 @@ document.addEventListener('pushStateChanged', (event) => {
   }
 });
 
+authShow();
 goToPage(config.routeNames.calendar);

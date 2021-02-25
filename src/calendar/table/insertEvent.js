@@ -3,6 +3,8 @@ import './deleteWindow/delWindowStyle.scss';
 
 export default function innerEventCell(mode, personName) {
   const eventDataObj = JSON.parse(localStorage.getItem('eventsStorage'));
+  const currentUser = localStorage.getItem('currentUser');
+  const admins = JSON.parse(localStorage.getItem('admList'));
 
   if ((mode === 'all') && (eventDataObj !== null)) {
     Object.entries(eventDataObj).forEach(([key, event]) => {
@@ -12,13 +14,16 @@ export default function innerEventCell(mode, personName) {
       cellDiv.insertAdjacentText('afterbegin', key);
       cellDiv.classList = 'eventCell';
       targetCell.append(cellDiv);
-      const delButton = document.createElement('div');
-      delButton.style.cursor = 'pointer';
-      delButton.insertAdjacentText('afterbegin', '×');
-      delButton.onclick = () => {
-        createDeleteWindow(key);
-      };
-      cellDiv.append(delButton);
+
+      if (admins.includes(currentUser)) {
+        const delButton = document.createElement('div');
+        delButton.classList = 'closeBtn';
+        delButton.insertAdjacentText('afterbegin', '×');
+        delButton.onclick = () => {
+          createDeleteWindow(key);
+        };
+        cellDiv.append(delButton);
+      }
     });
   }
 
@@ -35,12 +40,15 @@ export default function innerEventCell(mode, personName) {
           cellDiv.classList = 'eventCell';
           targetCell.append(cellDiv);
 
-          const delButton = document.createElement('div');
-          delButton.insertAdjacentText('afterbegin', '×');
-          delButton.onclick = () => {
-            createDeleteWindow(key);
-          };
-          cellDiv.append(delButton);
+          if (admins.includes(currentUser)) {
+            const delButton = document.createElement('div');
+            delButton.classList = 'closeBtn';
+            delButton.insertAdjacentText('afterbegin', '×');
+            delButton.onclick = () => {
+              createDeleteWindow(key);
+            };
+            cellDiv.append(delButton);
+          }
         }
       });
     });
