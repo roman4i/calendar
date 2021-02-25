@@ -10,6 +10,9 @@ import config from './config';
 const personName = ['Igor', 'Oleg', 'Olga', 'Yaroslav', 'Anna'];
 localStorage.setItem('nameList', JSON.stringify(personName));
 
+const adminList = ['Oleg', 'Olga'];
+localStorage.setItem('admList', JSON.stringify(adminList));
+
 window.onpopstate = () => {
   const routeToGo = Object.values(config.routes)
     .find((routeConfig) => window.location.pathname.includes(routeConfig.path));
