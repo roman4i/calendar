@@ -2,6 +2,7 @@ import processData from './generateEventData';
 import goToPage from '../navigation';
 import config from '../config';
 import { createDOMElement } from '../utils';
+import innerEventCell from '../calendar/table/insertEvent';
 
 let selectedNamesList = [];
 
@@ -148,6 +149,7 @@ export default function createEventPage() {
     if (document.getElementById('errorContent') != null) {
       document.getElementById('errorContent').remove();
     }
+    innerEventCell('all');
   };
   buttonsDiv.append(cancelBut);
 
@@ -160,6 +162,7 @@ export default function createEventPage() {
     const success = processData();
     if (success) {
       goToPage(config.routeNames.calendar);
+      innerEventCell('all');
       eventDiv.remove();
     }
   };

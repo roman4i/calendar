@@ -1,9 +1,10 @@
 import { createDOMElement } from '../../utils';
-// Now all works without classes, will fix it later
+import innerEventCell from '../table/insertEvent';
+
 class User {
+  rights = 'basic';
   constructor(name) {
     this.name = name;
-    this.rights = 'basic';
   }
 
   get rights() {
@@ -15,12 +16,22 @@ class User {
   }
 }
 
-// class Admin extends User {
-// }
+class Admin extends User {
+   rights = 'admin';
+}
 
 export default function authShow() {
   const names = JSON.parse(localStorage.getItem('nameList'));
   const admins = JSON.parse(localStorage.getItem('admList'));
+  const usersList = [];
+
+  names.forEach((element) => {
+    if (admins.includes(element)) {
+      usersList.push(new Admin(element));
+    } else {
+      usersList.push(new User(element));
+    }
+  });
 
   const root = document.getElementById('root');
   const mainCont = createDOMElement({
@@ -61,12 +72,14 @@ export default function authShow() {
     value: 'Confirm',
     onclick: () => {
       const selectedName = authSelect.options[authSelect.selectedIndex].text;
-      if (admins.includes(selectedName, 0)) {
-        document.getElementById('createEvent').hidden = false;
-      } else {
-        document.getElementById('createEvent').hidden = true;
-      }
+      usersList.forEach((element) => {
+        if (selectedName === element.name && element.rights === 'basic') {
+          document.getElementById('createEvent').disabled = true;
+        }
+        localStorage.setItem('currentUser', selectedName);
+      });
       mainCont.remove();
+      innerEventCell('all');
     },
   });
   confirmBlock.append(confirmAuth);
