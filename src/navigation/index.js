@@ -1,6 +1,6 @@
 import config from '../config';
 
-export const basePathname = '/intership-test-task/build';
+export const basePathname = '';
 
 const goToPage = (routeName) => {
   const route = config.routes[routeName];
