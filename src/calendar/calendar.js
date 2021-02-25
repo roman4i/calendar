@@ -2,6 +2,7 @@ import createCalendarHead from './head/header';
 import createTable from './table/table';
 import innerEventCell from './table/insertEvent';
 import { createDOMElement } from '../utils';
+import authShow from './auth/auth'
 
 export default function createCalendarPage() {
   const calendarDiv = createDOMElement({
@@ -15,4 +16,5 @@ export default function createCalendarPage() {
   createCalendarHead(calendarDiv);
   createTable();
   innerEventCell('all');
+  authShow();
 }

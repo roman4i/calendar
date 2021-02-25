@@ -11,5 +11,6 @@ module.exports = {
   },
   rules: {
     'import/prefer-default-export': 0,
+    'max-classes-per-file': ['error', 2],
   },
 };
