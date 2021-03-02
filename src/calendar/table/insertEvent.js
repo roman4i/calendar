@@ -1,10 +1,19 @@
+import axios from 'axios';
 import createDeleteWindow from './deleteWindow/delWindow';
+import { getEvents } from '../../api-functions';
 import './deleteWindow/delWindowStyle.scss';
 
-export default function innerEventCell(mode, personName) {
-  const eventDataObj = JSON.parse(localStorage.getItem('eventsStorage'));
+export default async function innerEventCell(mode, personName) {
   const currentUser = localStorage.getItem('currentUser');
   const admins = JSON.parse(localStorage.getItem('admList'));
+
+  const eventDataObj = {};
+
+  const events = await getEvents();
+  const eventDataArray = events.data.map((item) => JSON.parse(item.data));
+  eventDataArray.forEach((element) => {
+    Object.assign(eventDataObj, element);
+  });
 
   if ((mode === 'all') && (eventDataObj !== null)) {
     Object.entries(eventDataObj).forEach(([key, event]) => {

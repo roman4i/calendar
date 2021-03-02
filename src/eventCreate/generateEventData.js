@@ -1,6 +1,6 @@
 import creationError from './eventCreateEror';
+import { sendEvent } from '../api-functions';
 
-// eslint-disable-next-line consistent-return
 export default function processData() {
   const eventObject = {};
   eventObject.participiants = [];
@@ -46,36 +46,22 @@ export default function processData() {
     const cell = timePos * 6 + dayPos + 1;
 
     let booked = false;
-    let globalEventList = JSON.parse(localStorage.getItem('eventsStorage'));
-    if (globalEventList != null) {
-      Object.values(globalEventList).forEach((event) => {
-        if (event.cell === cell) {
-          document.getElementById('root').prepend(creationError('booked'));
-          booked = true;
-        }
-      });
-      if (!booked) {
-        globalEventList[eventObject.name] = {};
-        globalEventList[eventObject.name].participiants = eventObject.participiants;
-        globalEventList[eventObject.name].day = eventObject.day;
-        globalEventList[eventObject.name].time = eventObject.time;
-        globalEventList[eventObject.name].cell = cell;
-
-        localStorage.setItem('eventsStorage', JSON.stringify(globalEventList));
-        if (document.getElementById('errorContent') != null) {
-          document.getElementById('errorContent').remove();
-        }
-        return true;
+    const globalEventList = JSON.parse(localStorage.getItem('eventsStorage'));
+    Object.values(globalEventList).forEach((event) => {
+      if (event.cell === cell) {
+        document.getElementById('root').prepend(creationError('booked'));
+        booked = true;
       }
-    } else {
-      globalEventList = {};
-      globalEventList[eventObject.name] = {};
-      globalEventList[eventObject.name].participiants = eventObject.participiants;
-      globalEventList[eventObject.name].day = eventObject.day;
-      globalEventList[eventObject.name].time = eventObject.time;
-      globalEventList[eventObject.name].cell = cell;
+    });
+    if (!booked) {
+      const currentEvent = {};
+      currentEvent[eventObject.name] = {};
+      currentEvent[eventObject.name].participiants = eventObject.participiants;
+      currentEvent[eventObject.name].day = eventObject.day;
+      currentEvent[eventObject.name].time = eventObject.time;
+      currentEvent[eventObject.name].cell = cell;
 
-      localStorage.setItem('eventsStorage', JSON.stringify(globalEventList));
+      (async () => { await sendEvent(JSON.stringify(currentEvent)); })();
       if (document.getElementById('errorContent') != null) {
         document.getElementById('errorContent').remove();
       }
