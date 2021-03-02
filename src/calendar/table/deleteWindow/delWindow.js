@@ -1,5 +1,13 @@
-export default function createDeleteWindow(elementName) {
-  const dataObj = JSON.parse(localStorage.getItem('eventsStorage'));
+import { getEvents, deleteEvent } from '../../../api-functions';
+
+export default async function createDeleteWindow(elementName) {
+  const dataObj = {};
+
+  const events = await getEvents();
+  const eventDataArray = events.data.map((item) => JSON.parse(item.data));
+  eventDataArray.forEach((element) => {
+    Object.assign(dataObj, element);
+  });
 
   const createWindowCont = document.createElement('div');
   createWindowCont.id = 'delDiv';
@@ -32,8 +40,14 @@ export default function createDeleteWindow(elementName) {
   yesBtn.onclick = () => {
     document.getElementById(`cellDiv${dataObj[elementName].cell}`).remove();
     createWindowCont.remove();
-    delete dataObj[elementName];
-    localStorage.setItem('eventsStorage', JSON.stringify(dataObj));
+    let toRemove;
+    console.log(events.data);
+    events.data.forEach((element, index) => {
+      if (Object.keys(JSON.parse(element.data))[0] === elementName) {
+        toRemove = element.id;
+      }
+    });
+    deleteEvent(toRemove);
   };
   btnDiv.append(yesBtn);
 
