@@ -3,7 +3,9 @@ import goToPage from '../navigation';
 import config from '../config';
 import { createDOMElement } from '../utils';
 import innerEventCell from '../calendar/table/insertEvent';
+import StaticStorage from '../static-data';
 
+const dataStorage = StaticStorage.getInstance();
 let selectedNamesList = [];
 
 export default function createEventPage() {
@@ -128,7 +130,7 @@ export default function createEventPage() {
     eventDiv.append(optionDiv);
   }
 
-  const persons = JSON.parse(localStorage.getItem('nameList'));
+  const persons = dataStorage.getNames();
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const timeList = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
   createEventPersons('Participants:', 'choosePerson', persons);
