@@ -158,15 +158,14 @@ export default function createEventPage() {
   createBut.type = 'button';
   createBut.value = 'Create';
   createBut.classList = 'eventButton';
-  createBut.onclick = async () => {
+  createBut.onclick = () => {
     const success = processData();
     if (success) {
       goToPage(config.routeNames.calendar);
-      await innerEventCell('all');
+      innerEventCell('all');
       eventDiv.remove();
     }
   };
-  selectedNamesList = [];
 
   buttonsDiv.append(createBut);
 

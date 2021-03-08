@@ -1,7 +1,19 @@
-import creationError from './eventCreateEror';
-import { sendEvent } from '../api-functions';
+import ErrorFactory from './eventCreateEror';
+import { getEvents, sendEvent } from '../api-functions';
+
+function parseInpuEvents(eventsList, bookingCell) {
+  const eventDataArray = eventsList.data.map((item) => JSON.parse(item.data));
+  let bookedState = false;
+  eventDataArray.forEach((element) => {
+    if (element[Object.keys(element)[0]].cell === bookingCell) {
+      bookedState = true;
+    }
+  });
+  return bookedState;
+}
 
 export default function processData() {
+  let returnVal = true;
   const eventObject = {};
   eventObject.participiants = [];
   let errors = false;
@@ -11,18 +23,21 @@ export default function processData() {
     eventObject.name = nameParam;
     const participantsString = document.getElementById('choosePerson').item(0).text;
     const participantsSelected = participantsString.split(',');
-    if (participantsSelected.length > 0) {
+    if (participantsSelected[0] !== 'Select names') {
       eventObject.participiants = [...participantsSelected];
     } else {
       if (!errors) {
-        document.getElementById('root').prepend(creationError('participants'));
+        document.getElementById('root').prepend(new ErrorFactory('participants'));
       }
       errors = true;
+      returnVal = false;
     }
   } else {
-    document.getElementById('root').prepend(creationError('name'));
+    document.getElementById('root').prepend(new ErrorFactory('name'));
     errors = true;
+    returnVal = false;
   }
+
   if (!errors) {
     eventObject.day = document.getElementById('daySelect').selectedOptions[0].label;
     eventObject.time = document.getElementById('timeSelect').selectedOptions[0].label;
@@ -45,29 +60,30 @@ export default function processData() {
 
     const cell = timePos * 6 + dayPos + 1;
 
-    let booked = false;
-    const globalEventList = JSON.parse(localStorage.getItem('eventsStorage'));
-    Object.values(globalEventList).forEach((event) => {
-      if (event.cell === cell) {
-        document.getElementById('root').prepend(creationError('booked'));
-        booked = true;
-      }
-    });
-    if (!booked) {
-      const currentEvent = {};
-      currentEvent[eventObject.name] = {};
-      currentEvent[eventObject.name].participiants = eventObject.participiants;
-      currentEvent[eventObject.name].day = eventObject.day;
-      currentEvent[eventObject.name].time = eventObject.time;
-      currentEvent[eventObject.name].cell = cell;
+    getEvents()
+      .then((event) => {
+        const booked = parseInpuEvents(event, cell);
+        if (!booked) {
+          const currentEvent = {};
+          currentEvent[eventObject.name] = {};
+          currentEvent[eventObject.name].participiants = eventObject.participiants;
+          currentEvent[eventObject.name].day = eventObject.day;
+          currentEvent[eventObject.name].time = eventObject.time;
+          currentEvent[eventObject.name].cell = cell;
 
-      (async () => { await sendEvent(JSON.stringify(currentEvent)); })();
-      if (document.getElementById('errorContent') != null) {
-        document.getElementById('errorContent').remove();
-      }
-      return true;
-    }
-  } else {
-    return false;
+          (async () => { await sendEvent(JSON.stringify(currentEvent)); })();
+          if (document.getElementById('errorContent') != null) {
+            document.getElementById('errorContent').remove();
+          }
+        } else {
+          document.getElementById('root').prepend(new ErrorFactory('booked'));
+          returnVal = false;
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    console.log(returnVal);
   }
+  return returnVal;
 }

@@ -1,20 +1,52 @@
-export default function creationError(errorType) {
-  if (document.getElementById('errorContent') != null) {
-    document.getElementById('errorContent').remove();
+class defaultBlock {
+  actionContainer() {
+    if (document.getElementById('errorContent') !== null) {
+      document.getElementById('x').remove();
+    }
+    this.errorDiv = document.createElement('div');
+    this.errorDiv.classList = 'errorCont';
+    this.errorDiv.id = 'errorContent';
+    return this.errorDiv;
   }
+}
 
-  const errorDiv = document.createElement('div');
-  errorDiv.classList = 'errorCont';
-  errorDiv.id = 'errorContent';
+class ParticipantsError extends defaultBlock {
+  constructor() {
+    super();
+    const errorObj = this.actionContainer();
+    errorObj.insertAdjacentText('afterbegin', 'Failed to create an event. Please choose participants');
+    return errorObj;
+  }
+}
 
-  if (errorType === 'participants') {
-    errorDiv.insertAdjacentText('afterbegin', 'Failed to create an event. Please choose participants');
+class NameError extends defaultBlock {
+  constructor() {
+    super();
+    const errorObj = this.actionContainer();
+    errorObj.insertAdjacentText('afterbegin', 'Failed to create an event. Please enter event name');
+    return errorObj;
   }
-  if (errorType === 'name') {
-    errorDiv.insertAdjacentText('afterbegin', 'Failed to create an event. Please enter event name');
+}
+
+class BookedError extends defaultBlock {
+  constructor() {
+    super();
+    const errorObj = this.actionContainer();
+    errorObj.insertAdjacentText('afterbegin', 'Failed to create an event. Time slot is booked. Please choose other');
+    return errorObj;
   }
-  if (errorType === 'booked') {
-    errorDiv.insertAdjacentText('afterbegin', 'Failed to create an event. Time slot is booked. Please choose other');
+}
+
+export default class ErrorFactory {
+  constructor(errorType) {
+    if (errorType === 'participants') {
+      return new ParticipantsError();
+    }
+    if (errorType === 'name') {
+      return new NameError();
+    }
+    if (errorType === 'booked') {
+      return new BookedError();
+    }
   }
-  return errorDiv;
 }
