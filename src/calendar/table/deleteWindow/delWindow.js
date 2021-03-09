@@ -1,9 +1,11 @@
-import { getEvents, deleteEvent } from '../../../api-functions';
+import APICommunication from '../../../api-functions';
+
+const communicate = APICommunication.getInstance();
 
 export default async function createDeleteWindow(elementName) {
   const dataObj = {};
 
-  const events = await getEvents();
+  const events = await communicate.getEvents();
   const eventDataArray = events.data.map((item) => JSON.parse(item.data));
   eventDataArray.forEach((element) => {
     Object.assign(dataObj, element);
@@ -41,13 +43,12 @@ export default async function createDeleteWindow(elementName) {
     document.getElementById(`cellDiv${dataObj[elementName].cell}`).remove();
     createWindowCont.remove();
     let toRemove;
-    console.log(events.data);
-    events.data.forEach((element, index) => {
+    events.data.forEach((element) => {
       if (Object.keys(JSON.parse(element.data))[0] === elementName) {
         toRemove = element.id;
       }
     });
-    deleteEvent(toRemove);
+    communicate.deleteEvent(toRemove);
   };
   btnDiv.append(yesBtn);
 

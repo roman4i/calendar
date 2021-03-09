@@ -1,9 +1,10 @@
 import createDeleteWindow from './deleteWindow/delWindow';
-import { getEvents } from '../../api-functions';
+import APICommunication from '../../api-functions';
 import './deleteWindow/delWindowStyle.scss';
 import StaticStorage from '../../static-data';
 
 const dataStorage = StaticStorage.getInstance();
+const operateAPI = APICommunication.getInstance();
 
 export default async function innerEventCell(mode, personName) {
   const currentUser = dataStorage.getNames();
@@ -11,7 +12,7 @@ export default async function innerEventCell(mode, personName) {
 
   const eventDataObj = {};
 
-  const events = await getEvents();
+  const events = await operateAPI.getEvents();
   const eventDataArray = events.data.map((item) => JSON.parse(item.data));
   eventDataArray.forEach((element) => {
     Object.assign(eventDataObj, element);
