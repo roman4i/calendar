@@ -1,18 +1,12 @@
 import { createPage as createEventPage } from './eventCreate';
 import { createPage as createCalendarPage } from './calendar';
 import goToPage, { basePathname } from './navigation';
-import authShow from './calendar/auth/auth';
+import authShow from './calendar/auth/authScript';
 
 import './calendar/head/calendarHead.scss';
 import './calendar/table/tableStyle.scss';
 import './eventCreate/eventPage.scss';
 import config from './config';
-
-const personName = ['Igor', 'Oleg', 'Olga', 'Yaroslav', 'Anna'];
-localStorage.setItem('nameList', JSON.stringify(personName));
-
-const adminList = ['Oleg', 'Olga'];
-localStorage.setItem('admList', JSON.stringify(adminList));
 
 localStorage.setItem('currentUser', 'none');
 

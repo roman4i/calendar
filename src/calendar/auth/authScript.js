@@ -1,5 +1,8 @@
 import { createDOMElement } from '../../utils';
 import innerEventCell from '../table/insertEvent';
+import StaticStorage from '../../static-data';
+
+const dataStorage = StaticStorage.getInstance();
 
 class User {
   rights = 'basic';
@@ -21,8 +24,8 @@ class Admin extends User {
 }
 
 export default function authShow() {
-  const names = JSON.parse(localStorage.getItem('nameList'));
-  const admins = JSON.parse(localStorage.getItem('admList'));
+  const names = dataStorage.getNames();
+  const admins = dataStorage.getAdmins();
   const usersList = [];
 
   names.forEach((element) => {
@@ -83,4 +86,4 @@ export default function authShow() {
     },
   });
   confirmBlock.append(confirmAuth);
-}
+};

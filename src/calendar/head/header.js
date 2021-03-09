@@ -3,9 +3,11 @@ import createTable from '../table/table';
 import goToPage from '../../navigation';
 import config from '../../config';
 import { createDOMElement } from '../../utils';
+import StaticStorage from '../../static-data';
 
 const createPeopleOptions = () => {
-  const namesList = JSON.parse(localStorage.getItem('nameList'));
+  const importStorage = StaticStorage.getInstance();
+  const namesList = importStorage.getNames();
 
   return [
     {

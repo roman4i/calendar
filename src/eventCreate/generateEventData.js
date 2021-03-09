@@ -1,5 +1,7 @@
 import ErrorFactory from './eventCreateEror';
-import { getEvents, sendEvent } from '../api-functions';
+import APICommunication from '../api-functions';
+
+const communicate = APICommunication.getInstance();
 
 function parseInpuEvents(eventsList, bookingCell) {
   const eventDataArray = eventsList.data.map((item) => JSON.parse(item.data));
@@ -60,7 +62,7 @@ export default function processData() {
 
     const cell = timePos * 6 + dayPos + 1;
 
-    getEvents()
+    communicate.getEvents()
       .then((event) => {
         const booked = parseInpuEvents(event, cell);
         if (!booked) {
@@ -71,7 +73,7 @@ export default function processData() {
           currentEvent[eventObject.name].time = eventObject.time;
           currentEvent[eventObject.name].cell = cell;
 
-          (async () => { await sendEvent(JSON.stringify(currentEvent)); })();
+          (async () => { await communicate.sendEvent(JSON.stringify(currentEvent)); })();
           if (document.getElementById('errorContent') != null) {
             document.getElementById('errorContent').remove();
           }
