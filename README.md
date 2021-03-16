@@ -9,6 +9,8 @@
   npm run build
 ### Start local web server
   npm run dev
+### Start jest unit testing
+  npm run test
 
 ## Overview
 User can create and delete events, choose participants and time for event at creation page, filter created events by person. The project is done using pure JS.

@@ -1,6 +1,6 @@
 import APICommunication from '../../../api-functions';
 
-const communicate = APICommunication.getInstance();
+const communicate = new APICommunication();
 
 export default async function createDeleteWindow(elementName) {
   const dataObj = {};

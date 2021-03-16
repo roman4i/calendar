@@ -1,11 +1,25 @@
 import axios from 'axios';
 
+let instance = null;
+
+function errorProcess(someError) {
+  let returnVal;
+  if (someError.response) {
+    returnVal = 'Server error';
+  } else if (someError.request) {
+    returnVal = 'Connection error';
+  } else {
+    returnVal = someError.message;
+  }
+  return returnVal;
+}
+
 export default class APICommunication {
-  static getInstance() {
-    if (!APICommunication.instance) {
-      APICommunication.instance = new APICommunication();
+  constructor() {
+    if (!instance) {
+      instance = this;
     }
-    return APICommunication.instance;
+    return instance;
   }
 
   async getEvents() {
@@ -13,7 +27,7 @@ export default class APICommunication {
       this._events = await axios.get('http://158.101.166.74:8080/api/data/roman-verbenskyi/events');
       return this._events;
     } catch (error) {
-      return error;
+      return errorProcess(error);
     }
   }
 
@@ -24,7 +38,7 @@ export default class APICommunication {
       });
       return this._sendResult;
     } catch (error) {
-      return error;
+      return errorProcess(error);
     }
   }
 
@@ -33,7 +47,7 @@ export default class APICommunication {
       this._deleteResult = await axios.delete(`http://158.101.166.74:8080/api/data/roman-verbenskyi/events/${eventID}`);
       return this._deleteResult;
     } catch (error) {
-      return error;
+      return errorProcess(error);
     }
   }
 }
