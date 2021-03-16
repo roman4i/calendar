@@ -1,7 +1,7 @@
 class defaultBlock {
   actionContainer() {
     if (document.getElementById('errorContent') !== null) {
-      document.getElementById('x').remove();
+      document.getElementById('errorContent').remove();
     }
     this.errorDiv = document.createElement('div');
     this.errorDiv.classList = 'errorCont';

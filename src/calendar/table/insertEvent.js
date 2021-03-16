@@ -4,7 +4,7 @@ import './deleteWindow/delWindowStyle.scss';
 import StaticStorage from '../../static-data';
 
 const dataStorage = StaticStorage.getInstance();
-const operateAPI = APICommunication.getInstance();
+const operateAPI = new APICommunication();
 
 export default async function innerEventCell(mode, personName) {
   const currentUser = dataStorage.getNames();

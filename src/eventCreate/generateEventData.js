@@ -1,7 +1,7 @@
 import ErrorFactory from './eventCreateEror';
 import APICommunication from '../api-functions';
 
-const communicate = APICommunication.getInstance();
+const communicate = new APICommunication();
 
 function parseInpuEvents(eventsList, bookingCell) {
   const eventDataArray = eventsList.data.map((item) => JSON.parse(item.data));
@@ -14,7 +14,7 @@ function parseInpuEvents(eventsList, bookingCell) {
   return bookedState;
 }
 
-export default function processData() {
+export default async function processData() {
   let returnVal = true;
   const eventObject = {};
   eventObject.participiants = [];
@@ -62,30 +62,21 @@ export default function processData() {
 
     const cell = timePos * 6 + dayPos + 1;
 
-    communicate.getEvents()
-      .then((event) => {
-        const booked = parseInpuEvents(event, cell);
-        if (!booked) {
-          const currentEvent = {};
-          currentEvent[eventObject.name] = {};
-          currentEvent[eventObject.name].participiants = eventObject.participiants;
-          currentEvent[eventObject.name].day = eventObject.day;
-          currentEvent[eventObject.name].time = eventObject.time;
-          currentEvent[eventObject.name].cell = cell;
+    const event = await communicate.getEvents();
+    const booked = parseInpuEvents(event, cell);
+    if (!booked) {
+      const currentEvent = {};
+      currentEvent[eventObject.name] = {};
+      currentEvent[eventObject.name].participiants = eventObject.participiants;
+      currentEvent[eventObject.name].day = eventObject.day;
+      currentEvent[eventObject.name].time = eventObject.time;
+      currentEvent[eventObject.name].cell = cell;
 
-          (async () => { await communicate.sendEvent(JSON.stringify(currentEvent)); })();
-          if (document.getElementById('errorContent') != null) {
-            document.getElementById('errorContent').remove();
-          }
-        } else {
-          document.getElementById('root').prepend(new ErrorFactory('booked'));
-          returnVal = false;
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-    console.log(returnVal);
+      communicate.sendEvent(JSON.stringify(currentEvent));
+    } else {
+      document.getElementById('root').prepend(new ErrorFactory('booked'));
+      returnVal = false;
+    }
   }
   return returnVal;
 }
